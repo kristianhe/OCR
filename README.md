@@ -4,7 +4,7 @@ TDT4173 Assignment 5
 **Objective:** 	Gain experience with how to set up a pipeline for a non-trivial machine learning problem. Optical Character Recognition (OCR) will be implemented with at least two different machine learning methods to compare performance.
 
 *helpers*: 	Contains funtions to prepare the dataset\
-*cnn*: 		Implementation of a convolutional neural network to classify datasets
+*cnn*: 		  Implementation of a convolutional neural network to classify datasets
 
 
 
