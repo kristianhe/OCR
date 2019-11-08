@@ -10,7 +10,7 @@ cnn: 		Implementation of a convolutional neural network to classify datasets
 
 ## Required packages:
 **python3**
-> sudo apt-get install python3-pip python3-dev
+`sudo apt-get install python3-pip python3-dev`
 
 **numpy**
 > sudo apt-get python-numpy
