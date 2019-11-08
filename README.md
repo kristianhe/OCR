@@ -9,14 +9,18 @@ cnn: 		Implementation of a convolutional neural network to classify datasets
 
 
 ## Required packages:
-**python3**
+**python3** \\
 > sudo apt-get install python3-pip python3-dev
+
 **numpy**
 > sudo apt-get python-numpy
+
 **OpenCV**
 > sudo apt-get install python-opencv
+
 **TensorFlow**
 > sudo pip3 install tensorflow
+
 **Keras**
 > sudo pip3 install keras
 
