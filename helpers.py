@@ -1,5 +1,7 @@
 import os
 import numpy as np
+import PIL
+from PIL import Image
 
 # Path to data set
 #dir_dataset = os.path.dirname(os.path.realpath(__file__)) + "/chars74k-lite"

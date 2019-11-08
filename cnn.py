@@ -8,8 +8,8 @@ import helpers
 
 dir_dataset = os.path.dirname(os.path.realpath(__file__)) + "/chars74k-lite"
 
-filenames = loadFilenames(dir_dataset)
-labels = loadLabels(dir_dataset)
+filenames = helpers.loadFilenames(dir_dataset)
+labels = helpers.loadLabels(dir_dataset)
 
 # Display the data
 print("The number of images is: " + str(len(filenames)))
@@ -21,6 +21,5 @@ lbl = labels[0]; lbl2 = labels[5000]; lbl3 = labels[6400]
 
 
 print("> Preparing data ...")
-X, y = flattenImages(filenames, labels)
+X, y = helpers.flattenImages(filenames, labels)
 print("> Data preparation finished.")
-print(y[7111])
