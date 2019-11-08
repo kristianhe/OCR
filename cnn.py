@@ -4,6 +4,8 @@ import numpy as np
 import PIL
 from PIL import Image
 
+import helpers
+
 dir_dataset = os.path.dirname(os.path.realpath(__file__)) + "/chars74k-lite"
 
 filenames = loadFilenames(dir_dataset)
