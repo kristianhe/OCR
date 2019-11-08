@@ -23,6 +23,6 @@
 **Keras**\
 `sudo pip3 install keras`
 
-## To run:\
+## To run:
 `python3 cnn.py`\
 `python3 svm.py`
