@@ -1,5 +1,5 @@
 # Optical Character Recognition
-TDT4173 Assignment 5
+## TDT4173 Assignment 5
 
 **Objective:** 	Gain experience with how to set up a pipeline for a non-trivial machine learning problem. Optical Character Recognition (OCR) will be implemented with at least two different machine learning methods to compare performance.
 
