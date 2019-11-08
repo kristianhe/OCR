@@ -26,4 +26,6 @@ TDT4173 Assignment 5
 
 
 
-To run, **remember to use 'python3 [file.py]'**, not earlier versions of python.
+## To run:\
+`python3 cnn.py`\
+`python3 svm.py`
