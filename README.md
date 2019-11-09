@@ -17,6 +17,9 @@
 **OpenCV**\
 `sudo apt-get install python-opencv`
 
+**Pillow** *(Formerly PIL)*\
+`sudo pip3 install Pillow` 
+
 **TensorFlow**\
 `sudo pip3 install tensorflow`
 
