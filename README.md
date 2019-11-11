@@ -4,8 +4,10 @@
 **Objective:** 	Gain experience with how to set up a pipeline for a non-trivial machine learning problem. Optical Character Recognition (OCR) will be implemented with at least two different machine learning methods to compare performance.
 
 ## File description:
-*helpers*: 	Contains funtions to prepare the dataset\
-*cnn*: 		  Implementation of a convolutional neural network to classify datasets
+*helpers*: 	Contains functions to prepare the dataset\
+*cnn*: 		  Implementation of a convolutional neural network to classify datasets\
+*smv*:      
+
 
 ## Required packages:
 **python3**\
