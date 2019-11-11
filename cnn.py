@@ -50,7 +50,7 @@ y_test = keras.utils.to_categorical(y_test, num_classes)
 trainGen, testGen = helpers.createDataGenerators(x_train, x_test, y_train, y_test)
 print("> Data Generators created.")
 
-# Construct and train the convolutional neural network with Keras
+# Construct the convolutional neural network with Keras
 print("-- Initializing training ...")
 model = Sequential()
 model.add(Conv2D(32, kernel_size=(3,3), activation='relu', input_shape=input_shape))
