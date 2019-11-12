@@ -58,6 +58,8 @@ def flattenImages(filenames, labels):
 
      return np.array(imageData), np.array(labelData)
 
+# ------------------------ CNN ------------------------
+
 # (source: https://towardsdatascience.com/keras-data-generators-and-how-to-use-them-b69129ed779c)
 # Data Generators to augment the dataset
 def createDataGenerators(x_train, x_test, y_train, y_test):

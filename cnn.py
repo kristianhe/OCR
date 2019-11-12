@@ -8,6 +8,8 @@ from keras.models import Sequential
 from keras.layers import Conv2D, MaxPooling2D
 from keras.layers import Dense, Dropout, Flatten
 
+import matplotlib.pyplot as plt
+
 import helpers
 
 # Find paths and labels
@@ -27,7 +29,7 @@ x_train, x_test, y_train, y_test = train_test_split(X, y, train_size=0.67)
 imageRows, imageCols = 20, 20
 num_classes = 26  # Size of the alphabet
 batch_size = 64
-epochs = 20
+epochs = 15
 
 # Check for correct input data format convention ('channels_first'/'channels_last')
 print("-- Images being tranformed to an appropriate shape ...")
@@ -62,9 +64,15 @@ model.add(Flatten())
 model.add(Dense(128, activation='relu'))
 model.add(Dropout(0.5))
 model.add(Dense(num_classes, activation='softmax'))
+
+# Define optimizer
+adadelta = keras.optimizers.Adadelta(learning_rate=1.4,
+                                     rho=0.95)
+
+# Train the model
 model.compile(
      loss=keras.losses.categorical_crossentropy,
-     optimizer=keras.optimizers.Adadelta(),
+     optimizer=adadelta,
      metrics=['accuracy'])
 model.fit_generator(
      generator=trainGen,
@@ -74,10 +82,29 @@ model.fit_generator(
      validation_data=testGen,
      validation_steps=6000 // batch_size)
 
-# Calculate loss and accuracy
+# Evaluate the trained model with the test samples
 score = model.evaluate(x_test, y_test, verbose=0)
 print("-- Model has been trained.")
 print("Test loss:", score[0])
 print("Test accuracy:", score[1])
 
-# RESULTS: LOSS= 113.165, ACC=0.826
+# Nadam     = 0.805
+# Adam      = 0.825
+# SGD       = 0.686
+# RMSprop   = 0.779
+# Adagrad   = 0.783
+# Adadelta  = 0.825
+# Adamax    = 0.821
+
+
+detectionImg1 = './detection-images/detection-1.jpg'
+detectionImg2 = './detection-images/detection-2.jpg'
+
+def slidingWindow(path):
+    from itertools import islice
+
+    flattenedImages, _ = flattenImages(path, _)
+
+    def 
+
+slidingWindow("")
