@@ -1,4 +1,5 @@
 import os
+import matplotlib.pyplot as plt
 import numpy as np
 import PIL
 from PIL import Image
@@ -76,9 +77,26 @@ def createDataGenerators(x_train, x_test, y_train, y_test):
 
     return trainGenerator, testGenerator
 
+
+def plotPredictions(image, true, pred, accuracy, model, original_width=20, original_height=20, zero_one_interval=True):
+     ''' Plot 3x3 grid of Chars74K images (image) with the models predictions (pred) '''
+     fig, ax = plt.subplots(3, 3)
+     # axes are in a two-dimensional array, indexed by [row, col]
+     dim = 3
+     for i in range(dim):
+          for j in range(dim):
+               idx = i*dim+j
+               ax[i, j].axis('off')
+               if zero_one_interval:
+                    image[idx] = np.vectorize(lambda p: p*255)(image[idx])
+               ax[i, j].imshow( np.reshape(image[idx], (original_width, original_height)), cmap='gray')
+               ax[i, j].set_title( f'true: {numToChar(true[idx])} pred: {numToChar(pred[idx])}' )
+     fig.suptitle(f'{model} with {np.around(accuracy*100, decimals=2)}% accuracy')
+     plt.gray()
+     plt.show()
+
 # ------------------------ For SVM ------------------------
 
-import matplotlib.pyplot as plt
 from skimage.feature import hog
 from sklearn.pipeline import Pipeline
 from sklearn.svm import SVC
@@ -116,9 +134,8 @@ def SVM_getModel(X_train,  y_train):
     # Create a classifier object with the classifier and parameter candidates
     #clf_gs = GridSearchCV(pipeline, parameters, n_jobs=3, verbose=3, scoring='accuracy')
     # Create quick classifier witht he optimal hyperparameters
-    clf_gs = SVC(kernel='rbf', C=3, gamma=1)
-    # Train the classifier
-    clf_gs.fit(X_train, y_train)  
+    clf_gs = SVC(kernel='rbf', C=3, gamma=1) # These two are only used if
+    clf_gs.fit(X_train, y_train)             # optimal hyperparameters are known
     return clf_gs
 
 def getAccuracy(pred_val, true_val):
