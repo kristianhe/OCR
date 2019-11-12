@@ -59,6 +59,24 @@ def flattenImages(filenames, labels):
 
      return np.array(imageData), np.array(labelData)
 
+
+def plotPredictions(image, true, pred, accuracy, model, original_width=20, original_height=20, zero_one_interval=True):
+     ''' Plot 3x3 grid of Chars74K images (image) with the models predictions (pred) '''
+     fig, ax = plt.subplots(3, 3)
+     # axes are in a two-dimensional array, indexed by [row, col]
+     dim = 3
+     for i in range(dim):
+          for j in range(dim):
+               idx = i*dim+j
+               ax[i, j].axis('off')
+               if zero_one_interval:
+                    image[idx] = np.vectorize(lambda p: p*255)(image[idx])
+               ax[i, j].imshow( np.reshape(image[idx], (original_width, original_height)), cmap='gray')
+               ax[i, j].set_title( f'true: {numToChar(true[idx])} pred: {numToChar(pred[idx])}' )
+     fig.suptitle(f'{model} with {np.around(accuracy*100, decimals=2)}% accuracy')
+     plt.gray()
+     plt.show()
+
 # ------------------------ CNN ------------------------
 
 # (source: https://towardsdatascience.com/keras-data-generators-and-how-to-use-them-b69129ed779c)
@@ -77,23 +95,6 @@ def createDataGenerators(x_train, x_test, y_train, y_test):
 
     return trainGenerator, testGenerator
 
-
-def plotPredictions(image, true, pred, accuracy, model, original_width=20, original_height=20, zero_one_interval=True):
-     ''' Plot 3x3 grid of Chars74K images (image) with the models predictions (pred) '''
-     fig, ax = plt.subplots(3, 3)
-     # axes are in a two-dimensional array, indexed by [row, col]
-     dim = 3
-     for i in range(dim):
-          for j in range(dim):
-               idx = i*dim+j
-               ax[i, j].axis('off')
-               if zero_one_interval:
-                    image[idx] = np.vectorize(lambda p: p*255)(image[idx])
-               ax[i, j].imshow( np.reshape(image[idx], (original_width, original_height)), cmap='gray')
-               ax[i, j].set_title( f'true: {numToChar(true[idx])} pred: {numToChar(pred[idx])}' )
-     fig.suptitle(f'{model} with {np.around(accuracy*100, decimals=2)}% accuracy')
-     plt.gray()
-     plt.show()
 
 # ------------------------ For SVM ------------------------
 

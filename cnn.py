@@ -65,14 +65,10 @@ model.add(Dense(128, activation='relu'))
 model.add(Dropout(0.5))
 model.add(Dense(num_classes, activation='softmax'))
 
-# Define optimizer
-adadelta = keras.optimizers.Adadelta(learning_rate=1.4,
-                                     rho=0.95)
-
 # Train the model
 model.compile(
      loss=keras.losses.categorical_crossentropy,
-     optimizer=adadelta,
+     optimizer=keras.optimizers.Adadelta(),
      metrics=['accuracy'])
 model.fit_generator(
      generator=trainGen,
@@ -100,11 +96,3 @@ print("Test accuracy:", score[1])
 detectionImg1 = './detection-images/detection-1.jpg'
 detectionImg2 = './detection-images/detection-2.jpg'
 
-def slidingWindow(path):
-    from itertools import islice
-
-    flattenedImages, _ = flattenImages(path, _)
-
-    def 
-
-slidingWindow("")
