@@ -7,8 +7,8 @@ from keras import backend as K
 from keras.models import Sequential
 from keras.layers import Conv2D, MaxPooling2D
 from keras.layers import Dense, Dropout, Flatten
-
-import matplotlib.pyplot as plt
+from keras.layers import BatchNormalization, Activation
+from collections import Counter
 
 import helpers
 
@@ -29,7 +29,7 @@ x_train, x_test, y_train, y_test = train_test_split(X, y, train_size=0.67)
 imageRows, imageCols = 20, 20
 num_classes = 26  # Size of the alphabet
 batch_size = 64
-epochs = 15
+epochs = 20
 
 # Check for correct input data format convention ('channels_first'/'channels_last')
 print("-- Images being tranformed to an appropriate shape ...")
@@ -68,7 +68,7 @@ model.add(Dense(num_classes, activation='softmax'))
 # Train the model
 model.compile(
      loss=keras.losses.categorical_crossentropy,
-     optimizer=keras.optimizers.Adadelta(),
+     optimizer=keras.optimizers.Adam(),
      metrics=['accuracy'])
 model.fit_generator(
      generator=trainGen,
@@ -81,9 +81,10 @@ model.fit_generator(
 # Evaluate the trained model with the test samples
 score = model.evaluate(x_test, y_test, verbose=0)
 print("-- Model has been trained.")
-print("Test loss:", score[0])
-print("Test accuracy:", score[1])
+print("> Test loss:", score[0])
+print("> Test accuracy:", score[1])
 
+# Test of different solvers
 # Nadam     = 0.805
 # Adam      = 0.825
 # SGD       = 0.686
@@ -96,3 +97,21 @@ print("Test accuracy:", score[1])
 detectionImg1 = './detection-images/detection-1.jpg'
 detectionImg2 = './detection-images/detection-2.jpg'
 
+samples1 = helpers.slidingWindow(detectionImg1)
+
+samples_tf1 = samples1.reshape(samples1.shape[0], 20, 20, 1)
+samples_tf1 = samples_tf1.astype('float32')
+
+print('-- Start detection on example image: ', detectionImg1)
+predictions1 = model.predict(samples_tf1)
+value_list1 = []
+
+for pred in predictions1:
+    i = 0
+    for value in pred:
+        if value > 0.9:
+            value_list1.append(helpers.numToChar(i))
+
+        i += 1
+
+print('> Predicted values on', detectionImg1, Counter(value_list1))

@@ -95,6 +95,34 @@ def createDataGenerators(x_train, x_test, y_train, y_test):
 
     return trainGenerator, testGenerator
 
+# Create sliding window for image detection
+def slidingWindow(path):
+    from itertools import islice
+
+    flattenedImages = np.asarray(Image.open(path)).flatten()
+
+    def window(seq, n):
+        it = iter(seq)
+        result = tuple(islice(it, n))
+        if len(result) == n:
+            yield result
+        for elem in it:
+            result = result[1:] + (elem,)
+            yield result
+
+    slides = []
+
+    # Remove images that only have white pixels
+    for w in window(flattenedImages, 400):
+        count_white = w.count(255)
+        if count_white < 400:
+            slides.append(np.array(w))
+
+    return np.array(slides)
+
+
+
+
 
 # ------------------------ For SVM ------------------------
 
