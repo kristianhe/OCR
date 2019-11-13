@@ -59,22 +59,6 @@ def flattenImages(filenames, labels):
 
      return np.array(imageData), np.array(labelData)
 
-# (source: https://towardsdatascience.com/keras-data-generators-and-how-to-use-them-b69129ed779c)
-# Data Generators to augment the dataset
-def createDataGenerators(x_train, x_test, y_train, y_test):
-    trainDataGenerator = ImageDataGenerator(
-        rescale = 1./255,
-        rotation_range=0./180,
-        vertical_flip=True)
-
-    testDataGenerator = ImageDataGenerator(
-        rescale=1./255)
-
-    trainGenerator = trainDataGenerator.flow(x=x_train, y=y_train)
-    testGenerator = testDataGenerator.flow(x=x_test, y=y_test)
-
-    return trainGenerator, testGenerator
-
 
 def plotPredictions(image, true, pred, accuracy, model, original_width=20, original_height=20, zero_one_interval=True):
      ''' Plot 3x3 grid of Chars74K images (image) with the models predictions (pred) '''
@@ -92,6 +76,53 @@ def plotPredictions(image, true, pred, accuracy, model, original_width=20, origi
      fig.suptitle(f'{model} with {np.around(accuracy*100, decimals=2)}% accuracy')
      plt.gray()
      plt.show()
+
+# ------------------------ CNN ------------------------
+
+# (source: https://towardsdatascience.com/keras-data-generators-and-how-to-use-them-b69129ed779c)
+# Data Generators to augment the dataset
+def createDataGenerators(x_train, x_test, y_train, y_test):
+    trainDataGenerator = ImageDataGenerator(
+        rescale = 1./255,
+        rotation_range=0./180,
+        vertical_flip=True)
+
+    testDataGenerator = ImageDataGenerator(
+        rescale=1./255)
+
+    trainGenerator = trainDataGenerator.flow(x=x_train, y=y_train)
+    testGenerator = testDataGenerator.flow(x=x_test, y=y_test)
+
+    return trainGenerator, testGenerator
+
+# Create sliding window for image detection
+def slidingWindow(path):
+    from itertools import islice
+
+    flattenedImages = np.asarray(Image.open(path)).flatten()
+
+    def window(seq, n):
+        it = iter(seq)
+        result = tuple(islice(it, n))
+        if len(result) == n:
+            yield result
+        for elem in it:
+            result = result[1:] + (elem,)
+            yield result
+
+    slides = []
+
+    # Remove images that only have white pixels
+    for w in window(flattenedImages, 400):
+        count_white = w.count(255)
+        if count_white < 400:
+            slides.append(np.array(w))
+
+    return np.array(slides)
+
+
+
+
 
 # ------------------------ For SVM ------------------------
 

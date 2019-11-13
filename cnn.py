@@ -7,6 +7,8 @@ from keras import backend as K
 from keras.models import Sequential
 from keras.layers import Conv2D, MaxPooling2D
 from keras.layers import Dense, Dropout, Flatten
+from keras.layers import BatchNormalization, Activation
+from collections import Counter
 
 import helpers
 
@@ -62,9 +64,11 @@ model.add(Flatten())
 model.add(Dense(128, activation='relu'))
 model.add(Dropout(0.5))
 model.add(Dense(num_classes, activation='softmax'))
+
+# Train the model
 model.compile(
      loss=keras.losses.categorical_crossentropy,
-     optimizer=keras.optimizers.Adadelta(),
+     optimizer=keras.optimizers.Adam(),
      metrics=['accuracy'])
 model.fit_generator(
      generator=trainGen,
@@ -74,10 +78,40 @@ model.fit_generator(
      validation_data=testGen,
      validation_steps=6000 // batch_size)
 
-# Calculate loss and accuracy
+# Evaluate the trained model with the test samples
 score = model.evaluate(x_test, y_test, verbose=0)
 print("-- Model has been trained.")
-print("Test loss:", score[0])
-print("Test accuracy:", score[1])
+print("> Test loss:", score[0])
+print("> Test accuracy:", score[1])
 
-# RESULTS: LOSS= 113.165, ACC=0.826
+# Test of different solvers
+# Nadam     = 0.805
+# Adam      = 0.825
+# SGD       = 0.686
+# RMSprop   = 0.779
+# Adagrad   = 0.783
+# Adadelta  = 0.825
+# Adamax    = 0.821
+
+
+detectionImg1 = './detection-images/detection-1.jpg'
+detectionImg2 = './detection-images/detection-2.jpg'
+
+samples1 = helpers.slidingWindow(detectionImg1)
+
+samples_tf1 = samples1.reshape(samples1.shape[0], 20, 20, 1)
+samples_tf1 = samples_tf1.astype('float32')
+
+print('-- Start detection on example image: ', detectionImg1)
+predictions1 = model.predict(samples_tf1)
+value_list1 = []
+
+for pred in predictions1:
+    i = 0
+    for value in pred:
+        if value > 0.9:
+            value_list1.append(helpers.numToChar(i))
+
+        i += 1
+
+print('> Predicted values on', detectionImg1, Counter(value_list1))
