@@ -12,7 +12,7 @@ print("> Collecting Image data ...")
 X, y = helpers.flattenImages(filenames, labels)
 
 print("> Splitting train and test data ...")
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33)
+X_train, X_test, y_train, y_test = train_test_split(X[0:1000], y[0:1000], test_size=0.33)
 
 print("> Preprocess data ...")
 X_train_HOG = helpers.SVM_preProcessing(X_train)
@@ -32,5 +32,11 @@ print(f"> The accuracy of the model is {accuracy}")
 #print(f"> Plotting the image {y[0]} ...")
 #displayImage(X_train[0])
 
-helpers.plotPredictions(X_test[0:9], y_test[0:9], y_pred[0:9], accuracy, 'SVM')
+#helpers.plotPredictions(X_test[0:9], y_test[0:9], y_pred[0:9], accuracy, 'SVM')
 #helpers.plotPredictions(svm.X_test[6:14], svm.y_test[6:14], svm.y_pred[6:14], svm.accuracy, 'SVM')
+
+
+# ------------------ Detect test image -----------------------
+
+
+

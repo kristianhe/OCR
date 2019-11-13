@@ -99,7 +99,7 @@ def createDataGenerators(x_train, x_test, y_train, y_test):
 def slidingWindow(path):
     from itertools import islice
 
-    flattenedImages = np.asarray(Image.open(path)).flatten()
+    img_1d = np.asarray(Image.open(path)).flatten()
 
     def window(seq, n):
         it = iter(seq)
@@ -109,22 +109,18 @@ def slidingWindow(path):
         for elem in it:
             result = result[1:] + (elem,)
             yield result
-
+            
     slides = []
 
     # Remove images that only have white pixels
-    for w in window(flattenedImages, 400):
+    for w in window(img_1d, 400):
         count_white = w.count(255)
         if count_white < 400:
             slides.append(np.array(w))
 
     return np.array(slides)
 
-
-
-
-
-# ------------------------ For SVM ------------------------
+# ------------------------ SVM ------------------------
 
 from skimage.feature import hog
 from sklearn.pipeline import Pipeline
@@ -150,7 +146,7 @@ def SVM_preProcessing(X):
           #gray = rgb2gray(img_2d)
           #img_filtered = cv2.medianBlur(img_2d,5) # median blur?
           # get HoG
-          feature_descriptor, img_hog = hog(gray, orientations=9, pixels_per_cell=(4,4), cells_per_block=(1,1), visualise=True)
+          feature_descriptor, img_hog = hog(img_2d, orientations=9, pixels_per_cell=(4,4), cells_per_block=(1,1), visualise=True)
           # Flatten, normalize and add to return list
           X_out.append(img_hog.flatten()/255.0)
      return X_out
@@ -158,7 +154,7 @@ def SVM_preProcessing(X):
 def SVM_getModel(X_train,  y_train):
      ''' Cross Validation With Parameter Tuning Using Grid Search and return best model '''
      pipeline = Pipeline([
-               ('clf', SVC(kernel='rbf', gamma=0.01, C=100))
+               ('clf', SVC(kernel='rbf', gamma=0.01, C=100, probability=True))
      ])
      parameters = {
                'clf__gamma': (0.1, 0.25, 0.5, 75, 1),
@@ -167,8 +163,10 @@ def SVM_getModel(X_train,  y_train):
      # Create a classifier object with the classifier and parameter candidates
      #clf_gs = GridSearchCV(pipeline, parameters, n_jobs=3, verbose=3, scoring='accuracy')
      # Create quick classifier witht he optimal hyperparameters
-     clf_gs = SVC(kernel='rbf', C=3, gamma=1) # These two are only used if
-     clf_gs.fit(X_train, y_train)             # optimal hyperparameters are known
+     # The next two lines are only used if optimal hyperparameters are known
+     clf_gs = SVC(kernel='rbf', C=3, gamma=1, probability=True) 
+     clf_gs.fit(X_train, y_train)             
+     
      return clf_gs
 
 def getAccuracy(pred_val, true_val):

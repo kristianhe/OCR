@@ -93,7 +93,6 @@ print("> Test accuracy:", score[1])
 # Adadelta  = 0.825
 # Adamax    = 0.821
 
-
 detectionImg1 = './detection-images/detection-1.jpg'
 detectionImg2 = './detection-images/detection-2.jpg'
 
