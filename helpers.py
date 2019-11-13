@@ -98,48 +98,52 @@ def plotPredictions(image, true, pred, accuracy, model, original_width=20, origi
 from skimage.feature import hog
 from sklearn.pipeline import Pipeline
 from sklearn.svm import SVC
+from skimage.color import rgb2gray
+import cv2
 
 def displayImage(image, original_width=20, original_height=20, zero_one_interval=True):
-    '''Function for displaying the image, either with normal or 0-1 scale '''
-    if zero_one_interval:
-        image = np.vectorize(lambda p: p*255)(image)
-    plt.matshow(np.reshape(image, (original_width, original_height)))
-    plt.gray()
-    plt.show()
+     '''Function for displaying the image, either with normal or 0-1 scale '''
+     if zero_one_interval:
+          image = np.vectorize(lambda p: p*255)(image)
+     plt.matshow(np.reshape(image, (original_width, original_height)))
+     plt.gray()
+     plt.show()
 
 def SVM_preProcessing(X):
-    ''' Use the Histogram of Oriented Gradient (HOG) feature descriptor and normalize data '''
-    X_out = []
-    for img in X:
-        # Shape back to 2d image
-        img_2d = np.reshape(img, (20, 20))
-        #img_filtered = cv2.medianBlur(img_2d,5) # median blur?
-        # get HoG
-        feature_descriptor, img_hog = hog(img_2d, orientations=9, pixels_per_cell=(4,4), cells_per_block=(1,1), visualise=True)
-        # Flatten, normalize and add to return list
-        X_out.append(img_hog.flatten()/255.0)
-    return X_out
+     ''' Use the Histogram of Oriented Gradient (HOG) feature descriptor and normalize data '''
+     X_out = []
+     for img in X:
+          # Shape back to 2d image
+          img_2d = np.reshape(img, (20, 20))
+          # get Grayscale ? 
+          #gray = rgb2gray(img_2d)
+          #img_filtered = cv2.medianBlur(img_2d,5) # median blur?
+          # get HoG
+          feature_descriptor, img_hog = hog(gray, orientations=9, pixels_per_cell=(4,4), cells_per_block=(1,1), visualise=True)
+          # Flatten, normalize and add to return list
+          X_out.append(img_hog.flatten()/255.0)
+     return X_out
 
 def SVM_getModel(X_train,  y_train):
-    ''' Cross Validation With Parameter Tuning Using Grid Search and return best model '''
-    pipeline = Pipeline([
-            ('clf', SVC(kernel='rbf', gamma=0.01, C=100))
-    ])
-    parameters = {
-            'clf__gamma': (0.1, 0.25, 0.5, 75, 1),
-            'clf__C': (1, 1.33, 1.66, 2, 2.5, 3),
-    }   
-    # Create a classifier object with the classifier and parameter candidates
-    #clf_gs = GridSearchCV(pipeline, parameters, n_jobs=3, verbose=3, scoring='accuracy')
-    # Create quick classifier witht he optimal hyperparameters
-    clf_gs = SVC(kernel='rbf', C=3, gamma=1) # These two are only used if
-    clf_gs.fit(X_train, y_train)             # optimal hyperparameters are known
-    return clf_gs
+     ''' Cross Validation With Parameter Tuning Using Grid Search and return best model '''
+     pipeline = Pipeline([
+               ('clf', SVC(kernel='rbf', gamma=0.01, C=100))
+     ])
+     parameters = {
+               'clf__gamma': (0.1, 0.25, 0.5, 75, 1),
+               'clf__C': (1, 1.33, 1.66, 2, 2.5, 3),
+     }   
+     # Create a classifier object with the classifier and parameter candidates
+     #clf_gs = GridSearchCV(pipeline, parameters, n_jobs=3, verbose=3, scoring='accuracy')
+     # Create quick classifier witht he optimal hyperparameters
+     clf_gs = SVC(kernel='rbf', C=3, gamma=1) # These two are only used if
+     clf_gs.fit(X_train, y_train)             # optimal hyperparameters are known
+     return clf_gs
 
 def getAccuracy(pred_val, true_val):
-    correct = 0
-    N = len(true_val)
-    for i in range(N):
-        if true_val[i] == pred_val[i]:
-            correct += 1
-    return correct/N
+     correct = 0
+     N = len(true_val)
+     for i in range(N):
+          if true_val[i] == pred_val[i]:
+               correct += 1
+     return correct/N
