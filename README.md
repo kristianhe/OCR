@@ -29,5 +29,9 @@
 `sudo pip3 install keras`
 
 ## To run:
-`python3 cnn.py`\
-`python3 svm.py`
+for each of the methods, input "--image 'path'" to the image you want to try out the sliding window detection on.
+"-W ignore" is to ignore warnings, some of the dependencies of the HOG seems to be deprecated.
+\
+`python -W ignore cnn.py --image detection-images/detection-1.jpg`\
+or \
+`python -W ignore svm.py --image detection-images/detection-1.jpg`
