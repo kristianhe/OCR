@@ -37,6 +37,9 @@ def svm_localize_and_classify(image, clf, clf_type='svm', probLim=0.8, stepSize=
     returns:
         image with windows with supposedly letters in them 
     '''
+
+    print(f"> Initiating sliding window with for {clf_type} with:\n confidence threshold: {probLim*100}%\n step size: {stepSize}\n window dimension: {winW}x{winH}")
+
     predictions = []
     display_image = cv2.cvtColor(image.copy(), cv2.COLOR_GRAY2RGB)
     color = (0, 0, 255) # use red as window default, only turn green when detect letter
@@ -52,12 +55,14 @@ def svm_localize_and_classify(image, clf, clf_type='svm', probLim=0.8, stepSize=
             window_processed = [window_hog.flatten()/255.0]
             probabilities = clf.predict_proba(window_processed)
         else:
-            window_resized = window.reshape(1, 20, 20, 1).astype('float32')
-            probabilities = clf.predict_proba(window)
+            # Get the accuracies
+            window_cnnshape = window.reshape(1, 20, 20, 1)/255.0
+            probabilities = clf.predict(window_cnnshape) 
     
         for i, prob in enumerate(probabilities[0]):
             if prob > probLim:
-                predictions.append((window_processed, helpers.numToChar(i), prob))
+                print(prob)
+                predictions.append((window, helpers.numToChar(i), prob))
                 color = (0, 255, 0)
                 cv2.rectangle(display_image, (x, y), (x + winW, y + winH), (0, 255, 0), 2)
             else:

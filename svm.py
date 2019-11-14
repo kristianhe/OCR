@@ -13,7 +13,7 @@ filenames = helpers.getFilenames(dir_dataset)
 labels = helpers.getLabels(dir_dataset)
 
 # Flatten the data set
-print("> ------ Creating SVM classifier ------")
+print("> ------ SVM classifier ------")
 print("> Collecting Image data ...")
 X, y = helpers.flattenImages(filenames, labels)
 
