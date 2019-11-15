@@ -59,6 +59,13 @@ def flattenImages(filenames, labels):
 
      return np.array(imageData), np.array(labelData)
 
+def getAccuracy(pred_val, true_val):
+     correct = 0
+     N = len(true_val)
+     for i in range(N):
+          if true_val[i] == pred_val[i]:
+               correct += 1
+     return correct/N
 
 def plotPredictions(image, true, pred, accuracy, model, original_width=20, original_height=20, zero_one_interval=True):
      ''' Plot 3x3 grid of Chars74K images (image) with the models predictions (pred) '''
@@ -145,11 +152,3 @@ def SVM_getModel(X_train,  y_train):
      clf_gs.fit(X_train, y_train)             
      
      return clf_gs
-
-def getAccuracy(pred_val, true_val):
-     correct = 0
-     N = len(true_val)
-     for i in range(N):
-          if true_val[i] == pred_val[i]:
-               correct += 1
-     return correct/N

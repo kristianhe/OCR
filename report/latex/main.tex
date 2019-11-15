@@ -1,0 +1,49 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Template de Relatório
+% Version 0.8 (12/04/19)
+%
+% Authors:
+% Franklin Coêlho
+% Eudisley Anjos
+% 
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[10pt, a4paper, twocolumn]{article} 
+
+\input{config.tex}
+
+
+
+%%%%%%%%%%%%%%%%%%%%% HEADER %%%%%%%%%%%%%%%%%%%%%
+
+
+\title{Assignment 5: Optical Character Recognition}
+
+\author{
+    \centering\authorstyle Even Wanvik (249359), Kristian Henriksen (501783)\\
+    \institution{TDT4173 Machine Learning and Case-based Reasoning}\\
+}
+
+\date{\today}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\maketitle        
+
+\thispagestyle{firstpage}
+
+\lettrineabstract{Optical Character Recognition (OCR) is the process of transforming images of characters into digital text. It is an old field of research in computer science and has been until recent years been a electro-mechanical task. New and effective methods in Machine Learning has emerged to renew the cumbersome process. This paper concerns the procedure of implementing two different machine learning methods, namely a Support Vector Machine (SVM) and a Convolutional Neural Network (CNN), to perform OCR with the Chars74k-lite dataset. Different feature extraction techniques will be applied to pre-process the data. The two methods will be evaluated and compared based upon their ability to classify and detect characters.}\\
+
+\noindent\textbf{Keywords:} OCR, SVM, CNN 
+
+\input{1-INTRO}
+\input{2-FEATU}
+\input{3-CLASS}
+\input{4-DETEC}
+\input{5-CONCL}
+
+\end{document}

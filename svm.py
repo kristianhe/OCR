@@ -1,7 +1,7 @@
 from sklearn.model_selection import train_test_split
 import helpers
 import argparse
-from sliding_window import svm_localize_and_classify
+from sliding_window import localize_and_classify
 from PIL import Image
 import numpy as np
 import os
@@ -51,6 +51,6 @@ args = vars(ap.parse_args())
 image = np.asarray(Image.open(args["image"]))
 
 
-ret_img = svm_localize_and_classify(image, svc_clf, 'svm', probLim=0.88, stepSize=2, winW=20, winH=20)
+ret_img = localize_and_classify(image, svc_clf, 'svm', probLim=0.88, stepSize=2, winW=20, winH=20)
 cv2.imwrite('images/svm_pred2.png',ret_img)
 

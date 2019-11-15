@@ -1,0 +1,23 @@
+\section{INTRODUCTION}
+
+%A brief overview of the whole system.  This includes a short explanation on how to run it as well aswhat libraries your system is using.
+
+The ability to recognize characters retrieved from an optical scanner requires a reliable system that can tolerate shifting lighting conditions, motion blur, and twisted characters. An OCR system can be described using three main components: \textit{feature engineering, classification} and \textit{detection}.
+
+The process of extracting useful features is critical in machine learning problems. Raw data gathered by a sensor often includes an abundance of information in addition to noise. Therefore, we often see that the first and maybe most time-consuming part of the process is to analyze the data and find the features that yield the best classification. Our dataset has 400 features (or pixels) per image, which provides an adequate number of possible configurations. For instance, if the model is to converge within a reasonable time window, the number of features needs to be reduced by normalization in a process known as feature scaling. The rest of the techniques are covered in Section \ref{sec:feat-eng}.
+
+With an appropriate number of features available, the task of assigning a class to each image will be less complicated. The dataset has 26 labels $(a-z)$ that must be recognized inside a $20x20$ window of pixel intensities. To facilitate solving the multi-class problem, we first transform the alphabetical letters to numerical labels from 0 to 25. Then, we apply a Support Vector Machine and Convolutional Neural Network to perform the classification. The CNN is implemented using the Keras library, while the SVM is developed using the Scikit-learn package.
+
+Finally, we can perform object detection capable of localizing and characterizing letters within a more or less ordinary image. Our algorithm detects a letter within a given window with a technique called \textit{sliding window}. In short, the sliding window sweeps the full image with a smaller grid than the original image while it tries to classify letters within the frame. If the model's probability of prediction correct is higher than a set confidence threshold, the algorithm decides that a letter is localized at that position. 
+
+The system requires the packages and libraries that are listed below. \textbf{To run the code, type} \verb|python3 cnn.py| \textbf{or} \verb|python3 svm.py|.
+
+\begin{itemize}
+    \item Python3
+    \item Numpy
+    \item OpenCV
+    \item Scikit-learn
+    \item Pillow
+    \item TensorFlow
+    \item Keras
+\end{itemize}

@@ -22,7 +22,7 @@ def sliding_window(img, stepSize, windowSize):
            yield(x, y, img[y : y+windowSize[1], x : x+windowSize[0]])
 
 
-def svm_localize_and_classify(image, clf, clf_type='svm', probLim=0.8, stepSize=5, winW=20, winH=20, draw_window=False):
+def localize_and_classify(image, clf, clf_type='svm', probLim=0.8, stepSize=5, winW=20, winH=20, draw_window=False):
     ''' 
     Print letter classifications and plot their location
     args:
@@ -55,7 +55,6 @@ def svm_localize_and_classify(image, clf, clf_type='svm', probLim=0.8, stepSize=
             window_processed = [window_hog.flatten()/255.0]
             probabilities = clf.predict_proba(window_processed)
         else:
-            # Get the accuracies
             window_cnnshape = window.reshape(1, 20, 20, 1)/255.0
             probabilities = clf.predict(window_cnnshape) 
     
@@ -81,28 +80,3 @@ def svm_localize_and_classify(image, clf, clf_type='svm', probLim=0.8, stepSize=
     #cv2.waitKey(0)
 
     return display_image
-
-
-def cnn_slidingWindow(image):
-    from itertools import islice
-
-    img_1d = np.asarray(image.flatten())
-
-    def window(seq, n):
-        it = iter(seq)
-        result = tuple(islice(it, n))
-        if len(result) == n:
-            yield result
-        for elem in it:
-            result = result[1:] + (elem,)
-            yield result
-            
-    slides = []
-
-    # Remove images that only have white pixels
-    for w in window(img_1d, 400):
-        count_white = w.count(255)
-        if count_white < 400:
-            slides.append(np.array(w))
-
-    return np.array(slides)
